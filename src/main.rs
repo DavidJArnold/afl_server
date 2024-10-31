@@ -25,7 +25,7 @@ async fn handler() -> Html<String> {
 
     let year = 2024;
     let user_email = var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
-    let (model, margin_model, perf, tips) = run_model(year, None, &user_email).await;
+    let (model, margin_model, perf, tips) = run_model(year, None, user_email).await;
     println!("Model finished");
 
     let mut model_lines: String = String::new();
