@@ -1,11 +1,7 @@
 use std::env::var;
 
 use afl::run_model;
-use axum::{
-    response::Html,
-    routing::get,
-    Router,
-};
+use axum::{response::Html, routing::get, Router};
 
 #[tokio::main]
 async fn main() {
@@ -24,8 +20,9 @@ async fn handler() -> Html<String> {
     println!("Running tipper!");
 
     let year = 2024;
-    let user_email = var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
-    let (model, margin_model, perf, tips) = run_model(year, None, user_email).await;
+    let user_email =
+        var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
+    let (model, margin_model, perf, tips) = run_model(year, None, &user_email).await;
     println!("Model finished");
 
     let mut model_lines: String = String::new();
