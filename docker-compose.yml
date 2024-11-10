@@ -1,0 +1,10 @@
+services:
+  app:
+    container_name: afl
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      AFL_USER_EMAIL: "david.14587@gmail.com"
+    labels:
+      - "traefik.http.routers.afl.rule=Host(`afl.docker.localhost`)"
