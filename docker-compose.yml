@@ -6,5 +6,4 @@ services:
       - "3000:3000"
     environment:
       AFL_USER_EMAIL: ${AFL_USER_EMAIL}
-    labels:
-      - "traefik.http.routers.afl.rule=Host(`afl.docker.localhost`)"
+    restart: always
