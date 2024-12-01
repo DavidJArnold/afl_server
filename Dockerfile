@@ -1,4 +1,4 @@
-FROM rust:latest as builder
+FROM rust:1.77.2 as builder
 
 WORKDIR /src/afl_server
 COPY . .
