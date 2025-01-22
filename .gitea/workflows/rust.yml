@@ -1,0 +1,26 @@
+name: Rust deploy to mini
+run-name: Build and deploy
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
+  AFL_SERVER_PORT: ${{ vars.AFL_SERVER_PORT }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ gitea.repository }} repository has been cloned to the runner."
+
+      - name: Build container
+        run: docker compose build
+
+      - name: Deploy
+        run: docker compose up -d
+
+      - run: echo "🍏 This job's status is ${{ job.status }}. the service is deployed to port ${{ vars.AFL_SERVER_PORT}}."
