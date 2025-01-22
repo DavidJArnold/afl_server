@@ -19,7 +19,7 @@ async fn main() {
 async fn handler() -> Html<String> {
     println!("Running tipper!");
 
-    let year = 2024;
+    let year = 2025;
     let user_email =
         var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
     let (model, margin_model, perf, tips) = run_model(year, None, user_email).await;
