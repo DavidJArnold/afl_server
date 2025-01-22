@@ -3,7 +3,7 @@ services:
     container_name: afl
     build: .
     ports:
-      - "{AFL_SERVER_PORT}:3000"
+      - "${AFL_SERVER_PORT}:3000"
     environment:
       AFL_USER_EMAIL: ${AFL_USER_EMAIL}
     restart: always
