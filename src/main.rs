@@ -26,12 +26,13 @@ async fn handler() -> Html<String> {
     println!("Model finished");
 
     let mut model_lines: String = String::new();
-    for line in format!("{model}").split('\n') {
-        model_lines.push_str(&format!("<p>{line}</p>"));
-    }
 
     for tip in tips {
         model_lines.push_str(&format!("<h3>{tip}</h3>"));
+    }
+
+    for line in format!("{model}").split('\n') {
+        model_lines.push_str(&format!("<p>{line}</p>"));
     }
 
     model_lines.push_str(&format!(
