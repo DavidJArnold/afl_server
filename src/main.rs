@@ -2,6 +2,7 @@ use std::{collections::HashMap, env::var};
 
 use afl::run_model;
 use axum::{response::Html, routing::get, Router};
+use chrono::Local;
 
 #[tokio::main]
 async fn main() {
@@ -15,7 +16,8 @@ async fn main() {
 }
 
 async fn handler() -> Html<String> {
-    println!("Running tipper!");
+    let time = Local::now();
+    println!("[{time}] Running tipper!");
 
     let year = 2025;
     let user_email =
