@@ -19,9 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build container
-        run: docker compose build
+        run: docker compose build -p afl_dev
 
       - name: Deploy
-        run: docker compose up -d
+        run: docker compose up -d -p afl_dev
 
       - run: echo "🍏 This job's status is ${{ job.status }}. the service is deployed to port ${{ env.AFL_SERVER_PORT}}."
