@@ -11,7 +11,8 @@ async fn main() {
 
     // run it
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
-    println!("listening on {}", listener.local_addr().unwrap());
+    let time = Local::now();
+    println!("[{time}] listening on {}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }
 
@@ -43,7 +44,7 @@ async fn handler() -> Html<String> {
     offsets.insert("Geelong".to_string(), 10.699510245724253);
 
     let (model, margin_model, perf, tips) = run_model(year, None, Some(offsets), user_email).await;
-    println!("Model finished");
+    println!("[{time}] Model finished");
 
     let mut model_lines: String = String::new();
 
