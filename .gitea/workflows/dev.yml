@@ -5,10 +5,13 @@ on:
     branches:
       - dev
 
+with:
+  AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
+  AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
+
 jobs:
   build-and-deploy:
-    uses: ./.gitea/workflows/rust.yml
-    with:
-      AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
-      AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
+    steps:
+      - name: Run deploy
+        uses: ./.gitea/workflows/rust.yml
 
