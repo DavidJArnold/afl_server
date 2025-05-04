@@ -12,6 +12,5 @@ with:
 jobs:
   build-and-deploy:
     steps:
-      - name: Run deploy
-        uses: ./.gitea/workflows/rust.yml
+      uses: build-and-deploy: ./.gitea/workflows/rust.yml
 
