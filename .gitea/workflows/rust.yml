@@ -1,9 +1,6 @@
 name: Rust deploy to mini
 run-name: Build and deploy
-on:
-  push:
-    branches:
-      - main
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
