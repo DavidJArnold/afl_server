@@ -8,6 +8,7 @@ on:
 env:
   AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
   AFL_SERVER_PORT: ${{ vars.AFL_SERVER_PORT }}
+  AFL_SERVICE_NAME: afl
 
 jobs:
   build-and-deploy:

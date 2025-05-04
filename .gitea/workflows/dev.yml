@@ -9,6 +9,7 @@ on:
 env:
   AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
   AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
+  AFL_SERVICE_NAME: afl_dev
 
 jobs:
   build-and-deploy:
