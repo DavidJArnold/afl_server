@@ -15,6 +15,5 @@ jobs:
       - uses: actions/checkout@v1
         with:
           ref: 'master'
-      - name: My first step
       - uses: ./.gitea/workflows/rust.yml
 
