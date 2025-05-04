@@ -1,0 +1,14 @@
+name: Deploy dev
+run-name: Build and deploy
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build-and-deploy:
+    uses: ./.gitea/workflows/rust.yml
+    with:
+      AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
+      AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
+
