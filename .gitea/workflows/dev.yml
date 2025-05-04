@@ -1,14 +1,15 @@
-name: Deploy main
-run-name: Build and deploy main
+
+name: Deploy dev
+run-name: Build and deploy dev
 on:
   push:
     branches:
-      - main
+      - dev
 
 env:
   AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
-  AFL_SERVER_PORT: ${{ vars.AFL_SERVER_PORT }}
-  AFL_SERVICE_NAME: afl
+  AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
+  AFL_SERVICE_NAME: afl_dev
 
 jobs:
   build-and-deploy:

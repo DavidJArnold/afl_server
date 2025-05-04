@@ -1,6 +1,6 @@
 services:
   app:
-    container_name: afl
+    container_name: ${AFL_SERVICE_NAME}
     build: .
     ports:
       - "${AFL_SERVER_PORT}:3000"
