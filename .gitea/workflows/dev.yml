@@ -1,17 +1,26 @@
+
 name: Deploy dev
-run-name: Build and deploy
+run-name: Build and deploy dev
 on:
   push:
     branches:
       - dev
 
-with:
+env:
   AFL_USER_EMAIL: ${{ vars.AFL_USER_EMAIL }}
   AFL_SERVER_PORT: ${{ vars.DEV_AFL_SERVER_PORT }}
 
 jobs:
   build-and-deploy:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.gitea/workflows/rust.yml
+      - name: Check out repository code
+        uses: actions/checkout@v4
 
+      - name: Build container
+        run: docker compose build
+
+      - name: Deploy
+        run: docker compose up -d
+
+      - run: echo "🍏 This job's status is ${{ job.status }}. the service is deployed to port ${{ env.AFL_SERVER_PORT}}."
