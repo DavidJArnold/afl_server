@@ -20,7 +20,7 @@ checksum = "512761e0bb2578dd7380c6baaa0f4ce03e84f95e960231d1dec8bf4d7d6e2627"
 [[package]]
 name = "afl"
 version = "0.1.0"
-source = "git+https://github.com/DavidJArnold/afl#03ade37b5e34bb8930f6f731c488e8a4054605f1"
+source = "git+https://github.com/DavidJArnold/afl#60a8bf5b50cd3a4f44ce1c87de21c931093e31a3"
 dependencies = [
  "argmin",
  "argmin-math",
