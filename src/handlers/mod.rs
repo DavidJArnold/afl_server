@@ -1,2 +1,2 @@
-mod favicon;
-pub use favicon::favicon_handler;
+pub mod afl_handler;
+pub mod favicon;
