@@ -1,11 +1,11 @@
-use std::{collections::HashMap, env::var, path::PathBuf};
+use std::{collections::HashMap, env::var};
 
 use afl::run_model;
-use axum::{response::Html, response::Response, routing::get, Router, response::IntoResponse};
+use axum::{response::Html, routing::get, Router};
 use chrono::Local;
-// use tower_http::services::ServeDir;
-use tokio::fs::File;
-use tokio::io::AsyncReadExt;
+
+mod handlers;
+use handlers::favicon_handler;
 
 #[tokio::main]
 async fn main() {
@@ -77,27 +77,3 @@ async fn handler() -> Html<String> {
     Html(model_lines)
 }
 
-async fn favicon_handler() -> Response {
-    println!("Getting favicon");
-    let path = PathBuf::from("./static/favicon.ico");
-    match File::open(&path).await {
-        Ok(mut file) => {
-            let mut contents = vec![];
-            if file.read_to_end(&mut contents).await.is_ok() {
-                Response::builder()
-                    .header("Content-Type", "image/x-icon")
-                    .body(contents.into_response().into_body())
-                    .unwrap()
-            } else {
-                Response::builder()
-                    .status(500)
-                    .body("Failed to read favicon".into_response().into_body())
-                    .unwrap()
-            }
-        }
-        Err(_) => Response::builder()
-            .status(404)
-            .body("Favicon not found".into_response().into_body())
-            .unwrap(),
-    }
-}
