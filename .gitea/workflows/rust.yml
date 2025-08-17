@@ -12,7 +12,8 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04-v25.04.01
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
