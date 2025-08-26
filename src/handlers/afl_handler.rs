@@ -89,7 +89,7 @@ pub async fn handler() -> Html<String> {
     // format current round tips
     for tip in tips {
         model_lines.push_str(&format!(
-            "<h3>({}) {} by {} points ({}): {} v {}</h3>",
+            "<h3>({}) {} by {} points ({:.02}%): {} v {}</h3>",
             tip.home_or_away_wins,
             tip.winner,
             tip.margin,
