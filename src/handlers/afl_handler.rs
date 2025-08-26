@@ -1,8 +1,58 @@
 use std::{collections::HashMap, env::var};
 
 use afl::run_model;
-use axum::{response::Html};
+use afl::tipping::models::glicko::GlickoModel;
+use afl::tipping::models::margin::MarginModel;
+use afl::tipping::ModelPerformance;
+use axum::response::Html;
 use chrono::Local;
+use itertools::Itertools;
+
+fn model_summary(
+    model: GlickoModel,
+    margin_model: MarginModel,
+    perf: ModelPerformance,
+    year: i32,
+) -> String {
+    let mut model_lines = String::new();
+
+    model_lines.push_str(
+        "<table>
+  <thead>
+    <tr>
+      <th>Team</th>
+      <th>Rating</th>
+    </tr>
+  </thead>
+  <tbody>",
+    );
+    for (team_name, team_stats) in model
+        .model_stats
+        .iter()
+        .sorted_unstable_by_key(|x| -x.1.elo.round() as i64)
+    {
+        model_lines.push_str(&format!(
+            "<tr><td>{}</td><td>{}</td></tr>",
+            team_name,
+            team_stats.elo.round() as i64
+        ));
+    }
+    model_lines.push_str("</tbody></table>");
+
+    model_lines.push_str(&format!(
+        "<p>{year} score {} from {} games ({:.2}%), first round margin {}</p>",
+        perf.total,
+        perf.num_games,
+        perf.total as f32 / perf.num_games as f32 * 100.0,
+        perf.error_margin,
+    ));
+    let mean_mae = perf.mae as f64 / perf.num_games as f64;
+    model_lines.push_str(&format!(
+        "<p>MAE: {} BITS: {} (final k={})</p>",
+        mean_mae, perf.bits, margin_model.k
+    ));
+    model_lines
+}
 
 pub async fn handler() -> Html<String> {
     let time = Local::now();
@@ -36,42 +86,20 @@ pub async fn handler() -> Html<String> {
 
     let mut model_lines: String = String::new();
 
+    // format current round tips
     for tip in tips {
-        model_lines.push_str(&format!("<h3>{tip}</h3>"));
+        model_lines.push_str(&format!(
+            "<h3>({}) {} by {} points ({}): {} v {}</h3>",
+            tip.home_or_away_wins,
+            tip.winner,
+            tip.margin,
+            tip.percent,
+            tip.home_team_name,
+            tip.away_team_name
+        ));
     }
 
-    model_lines.push_str("<table>
-  <thead>
-    <tr>
-      <th>Team</th>
-      <th>Rating</th>
-    </tr>
-  </thead>
-  <tbody>");
-    for line in format!("{model}").split('\n') {
-        if line.is_empty() {
-            continue;
-        }
-        let (team, rating) = line.split_once(':').unwrap();
-        let team = team.trim();
-        let rating = rating.trim().parse::<f32>().unwrap().round();
-        model_lines.push_str(&format!("<tr><td>{team}</td><td>{rating}</td></tr>"));
-    }
-    model_lines.push_str("</tbody></table>");
-
-    model_lines.push_str(&format!(
-        "<p>{year} score {} from {} games ({:.2}%), first round margin {}</p>",
-        perf.total,
-        perf.num_games,
-        perf.total as f32 / perf.num_games as f32 * 100.0,
-        perf.error_margin,
-    ));
-    let mean_mae = perf.mae as f64 / perf.num_games as f64;
-    model_lines.push_str(&format!(
-        "<p>MAE: {} BITS: {} (final k={})</p>",
-        mean_mae, perf.bits, margin_model.k
-    ));
-
+    model_lines.push_str(&model_summary(model, margin_model, perf, year));
     Html(model_lines)
 }
 
@@ -106,41 +134,10 @@ pub async fn previous_year_handler() -> Html<String> {
     println!("[{time}] Previous year model finished");
 
     let mut model_lines: String = String::new();
-    
+
     model_lines.push_str(&format!("<h1>{year} AFL Season Results</h1>"));
 
-    model_lines.push_str("<table>
-  <thead>
-    <tr>
-      <th>Team</th>
-      <th>Rating</th>
-    </tr>
-  </thead>
-  <tbody>");
-    for line in format!("{model}").split('\n') {
-        if line.is_empty() {
-            continue;
-        }
-        let (team, rating) = line.split_once(':').unwrap();
-        let team = team.trim();
-        let rating = rating.trim().parse::<f32>().unwrap().round();
-        model_lines.push_str(&format!("<tr><td>{team}</td><td>{rating}</td></tr>"));
-    }
-    model_lines.push_str("</tbody></table>");
-
-    model_lines.push_str(&format!(
-        "<p>{year} score {} from {} games ({:.2}%), first round margin {}</p>",
-        perf.total,
-        perf.num_games,
-        perf.total as f32 / perf.num_games as f32 * 100.0,
-        perf.error_margin,
-    ));
-    let mean_mae = perf.mae as f64 / perf.num_games as f64;
-    model_lines.push_str(&format!(
-        "<p>MAE: {} BITS: {} (final k={})</p>",
-        mean_mae, perf.bits, margin_model.k
-    ));
+    model_lines.push_str(&model_summary(model, margin_model, perf, year));
 
     Html(model_lines)
 }
-

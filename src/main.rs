@@ -7,7 +7,10 @@ mod handlers;
 async fn main() {
     let app = Router::new()
         .route("/", get(handlers::afl_handler::handler))
-        .route("/previous", get(handlers::afl_handler::previous_year_handler))
+        .route(
+            "/previous",
+            get(handlers::afl_handler::previous_year_handler),
+        )
         .route("/favicon.ico", get(handlers::favicon::favicon_handler));
 
     // run it
@@ -16,4 +19,3 @@ async fn main() {
     println!("[{time}] listening on {}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
 }
-

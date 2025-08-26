@@ -9,5 +9,6 @@ edition = "2021"
 afl = { git = "https://github.com/DavidJArnold/afl", version = "0.1.0" }
 axum = "0.7.6"
 chrono = "0.4.41"
+itertools = "0.14.0"
 tokio = { version = "1.0", features = ["full"] }
 tower-http = { version = "0.6.6", features = ["fs"] }
