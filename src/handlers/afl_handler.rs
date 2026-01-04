@@ -5,7 +5,7 @@ use afl::tipping::models::glicko::GlickoModel;
 use afl::tipping::models::margin::MarginModel;
 use afl::tipping::ModelPerformance;
 use axum::response::Html;
-use chrono::Local;
+use chrono::{Datelike, Local};
 use itertools::Itertools;
 
 fn model_summary(
@@ -58,7 +58,7 @@ pub async fn handler() -> Html<String> {
     let time = Local::now();
     println!("[{time}] Running tipper!");
 
-    let year = 2025;
+    let year = time.year();
     let user_email =
         var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
     let mut offsets: HashMap<String, f64> = HashMap::new();
@@ -107,7 +107,7 @@ pub async fn previous_year_handler() -> Html<String> {
     let time = Local::now();
     println!("[{time}] Running previous year model!");
 
-    let year = 2024;
+    let year = time.year() - 1;
     let user_email =
         var("AFL_USER_EMAIL").expect("AFL_USER_EMAIL environment variable not set, aborting.");
     let mut offsets: HashMap<String, f64> = HashMap::new();
