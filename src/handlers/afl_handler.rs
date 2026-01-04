@@ -5,7 +5,7 @@ use afl::tipping::models::glicko::GlickoModel;
 use afl::tipping::models::margin::MarginModel;
 use afl::tipping::ModelPerformance;
 use axum::response::Html;
-use chrono::{Local};
+use chrono::{Datelike, Local};
 use itertools::Itertools;
 
 fn model_summary(
